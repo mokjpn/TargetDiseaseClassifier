@@ -25,7 +25,7 @@ You will need R, {readr} package, and {keras} package.
 
 Source Dataset.R in this repository in your R.
 
-```{r}
+```{r, cache=TRUE}
 source("Dataset.R")
 ```
 
@@ -33,9 +33,11 @@ source("Dataset.R")
 
 Source train.R in this repository in your R. Currnetly loss is around 0.151, and accuracy is around 0.975.
 
-```{r}
+```{r, cache=TRUE}
 source("train.R")
 ```
+
+![training curve](Train15000.png)
 
 1. Try the trained model.
 

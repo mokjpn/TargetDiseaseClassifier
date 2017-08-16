@@ -91,6 +91,8 @@ Source train.R in this repository in your R. Currnetly loss is around 0.151, and
 source("train.R")
 ```
 
+![training curve](Train15000.png)
+
 1.  Try the trained model.
 
 In training process, you will have `ohmasters` variable that contains dictionary to encode your text. With this, you can test classification by giving some new text.
@@ -99,5 +101,4 @@ In training process, you will have `ohmasters` variable that contains dictionary
 eval_title(model_nn, "SGLT2阻害薬", ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length)
 ```
 
-    ## [1] "内科学一般/Medicine in general"                   
-    ## [2] "内分泌・代謝病内科学/Endocrinology and Metabolism"
+    ## [1] "内分泌・代謝病内科学/Endocrinology and Metabolism"
