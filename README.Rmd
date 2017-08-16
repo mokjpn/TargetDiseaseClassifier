@@ -1,0 +1,47 @@
+---
+title: "Classify target disease of clinical trial project registerred in UMIN-CTR Clinical Trial Registry"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What is this?
+
+This is an experimental machine learning project, to train some neural networks to classify texts in the clinical trial registries automatically.
+
+## Usage
+
+1. Download UMIN-CTR comma-separated text archive.
+
+Currently UMIN-ID is required to download the archive. Download files including Japanese, from http://www.umin.ac.jp/ctr/csvdata.html
+
+1. Prepare running environment.
+
+You will need R, {readr} package, and {keras} package.
+
+1. Generate dataset for training and evaluation.
+
+Source Dataset.R in this repository in your R.
+
+```{r}
+source("Dataset.R")
+```
+
+1. Train the model.
+
+Source train.R in this repository in your R. Currnetly loss is around 0.151, and accuracy is around 0.975.
+
+```{r}
+source("train.R")
+```
+
+1. Try the trained model.
+
+In training process, you will have `ohmasters` variable that contains dictionary to encode your text. With this, you can test classification by giving some new text.
+
+```{r}
+eval_title(model_nn, "SGLT2阻害薬", ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length)
+```
+
