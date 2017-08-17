@@ -1,30 +1,12 @@
 library(readr)
+
 ctr_full <- read_csv("ctr_data_j.csv")
 pickup <- sample(1:nrow(ctr_full),15000)
 ctr_sample_train <- ctr_full[pickup,]
 pickup <- sample( (1:nrow(ctr_full))[-pickup],10000)
 ctr_sample_eval <- ctr_full[pickup,]
 
-txt2matrix <- function(text, master, forRNN) {
-  contents <- sapply(text, function(x){strsplit(x,'')})[[1]]
-  if(forRNN)
-    return(sapply(contents, function(x) {
-      as.integer(master %in% x)
-    }))
-  else
-    return(as.integer(master %in% contents))
-}
-
-eval_title <- function(model, title, categorymaster, titleschrmaster,maxtitlelength,forRNN=FALSE, threshould=0.5) {
-  n <- maxtitlelength - nchar(title)
-  et <- txt2matrix(paste(c(title, rep(' ',n)), collapse=''), titleschrmaster,forRNN)
-  if(forRNN)
-    et <- aperm(et, perm=c(3,2,1))
-  else
-    et <- matrix(et, nrow=1)
-  
-  categorymaster[which(model %>% predict(et) > threshould)]
-}
+source("DataUtils.R")
 
 generate_onehot_masters <- function(fulldata) {
   researchTitles <- as.data.frame(fulldata[,"試験名/Official scientific title of the study"], stringsAsFactors = FALSE)[,1]
