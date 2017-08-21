@@ -20,6 +20,7 @@ history_nn <- model_nn %>% fit(X, Y, epochs=100, batch_size=2000)
 
 load("Eval10000.RData") # contains ohmasters, eval_data
 loss_and_metrics_nn <- model_nn %>% evaluate(eval_data$X, eval_data$Y)
-
+eval_multilabel_nn <- eval_multilabel(model_nn, eval_data)
 model_nn_serialized <- serialize_model(model_nn)
 save(model_nn_serialized, file="model_nn.RData")
+save_model_hdf5(model_nn,"model_nn.hdf5") 

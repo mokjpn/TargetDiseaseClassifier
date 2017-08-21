@@ -34,6 +34,7 @@ history_cnn <- model_cnn %>% fit(X, Y, epochs=25, batch_size=200)
 
 load("Eval10000E.RData") # contains ohmasters, eval_data
 loss_and_metrics_cnn <- model_cnn %>% evaluate(eval_data$X, eval_data$Y)
+eval_multilabel_cnn <- eval_multilabel(model_cnn, eval_data)
 
 model_cnn_serialized <- serialize_model(model_cnn)
 save(model_cnn_serialized, file="model_cnn.RData")
