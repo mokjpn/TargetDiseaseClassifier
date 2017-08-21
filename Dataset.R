@@ -25,7 +25,7 @@ generate_onehot_masters <- function(fulldata) {
   return(list(categoryMaster=categoryMaster, titlesCharactersMaster=titlesCharactersMaster, max_title_length=max_title_length))
 }
 
-generate_xy <- function(data, categoryMaster, titlesCharactersMaster, max_title_length, forRNN=FALSE) {
+generate_xy <- function(data, categoryMaster, titlesCharactersMaster, max_title_length, useEmbedding=FALSE) {
   researchTitles <- as.data.frame(data[,"試験名/Official scientific title of the study"], stringsAsFactors = FALSE)[,1]
   diseaseClasses <- as.data.frame(data[,"疾患区分1/Classification by specialty"],stringsAsFactors = FALSE)[,1]
   
@@ -49,11 +49,8 @@ generate_xy <- function(data, categoryMaster, titlesCharactersMaster, max_title_
     paste(c(x, rep(' ',n)), collapse='')
   })
   
-  tcc <- sapply(titles_padded,txt2matrix, titlesCharactersMaster, forRNN,  simplify="array")
-  if(forRNN)
-    researchTitles_onehot <- aperm(tcc, perm=c(3,2,1))
-  else
-    researchTitles_onehot <- aperm(tcc, perm=c(2,1))
+  tcc <- sapply(titles_padded,txt2matrix, titlesCharactersMaster, useEmbedding,  simplify="array")
+  researchTitles_onehot <- aperm(tcc, perm=c(2,1))
   
   X <- researchTitles_onehot
 
@@ -62,7 +59,7 @@ generate_xy <- function(data, categoryMaster, titlesCharactersMaster, max_title_
 
 ohmasters <- generate_onehot_masters(ctr_full)
 
-train_data <- generate_xy(ctr_sample_train, ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length)
-save(train_data, ohmasters, file="Train15000.RData")
-eval_data <- generate_xy(ctr_sample_eval, ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length)
-save(eval_data, ohmasters, file="Eval10000.RData")
+train_data <- generate_xy(ctr_sample_train, ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length, useEmbedding=TRUE)
+save(train_data, ohmasters, file="Train15000E.RData")
+eval_data <- generate_xy(ctr_sample_eval, ohmasters$categoryMaster, ohmasters$titlesCharactersMaster, ohmasters$max_title_length, useEmbedding=TRUE)
+save(eval_data, ohmasters, file="Eval10000E.RData")
