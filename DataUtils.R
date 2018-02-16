@@ -25,7 +25,7 @@ eval_multilabel <- function(model, eval_data, threshould=0.5, method=c("identica
   eval <- sapply(1:dim(prediction)[1], function(i) {
     if(method=="identical")
       identical(as.integer(prediction[i,]), eval_data$Y[i,])
-    else if(method=="xor")
+    else if(method=="xor") # return TRUE only when proportion of disagreement between prediction and eval data is lower than allowance.
       sum(xor(as.integer(prediction[i,]),eval_data$Y[i,]))/length(eval_data$Y[i,]) < allowance
   })
   sum(eval) / length(eval)
