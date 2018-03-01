@@ -47,7 +47,7 @@ doTrain <- function(source=c("title", "purpose"), tokenize=c("char", "word"), em
       "seq" = {
         nfeat <- max(c(as.vector(data$train$X), as.vector(data$eval$X)))
         inputs <- layer_input(shape=dim(X)[2])
-        embed <- inputs %>% layer_embedding(input_dim=nfeat,output_dim=64)
+        embed <- inputs %>% layer_embedding(input_dim=nfeat,output_dim=128)
         if(NETWORK == "dense")
           embed <- embed %>% layer_flatten()
       })
@@ -62,10 +62,9 @@ doTrain <- function(source=c("title", "purpose"), tokenize=c("char", "word"), em
          }, 
          "rnn" = {
            predictions <- embed %>%
-             layer_simple_rnn(units = 100, return_sequences = TRUE) %>% 
-             layer_simple_rnn(units = 100, return_sequences = TRUE) %>% 
-             layer_simple_rnn(units = 100, return_sequences = TRUE) %>%
-             layer_simple_rnn(units = 100) %>% 
+             layer_simple_rnn(units = 128, return_sequences = TRUE) %>% 
+             layer_simple_rnn(units = 128, return_sequences = TRUE) %>%
+             layer_simple_rnn(units = 128) %>% 
              layer_dense(units=dim(Y)[2], activation='sigmoid')
          }, 
          "1dc" = {
