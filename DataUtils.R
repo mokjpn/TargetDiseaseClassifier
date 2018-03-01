@@ -55,9 +55,9 @@ eval_text <- function(text, model, tokenizer, master, num=1,raw=FALSE,word=TRUE,
   else
     txt <- strsplit(text,'')[[1]]
   if(bow)
-    seq <- t(to_bow(unlist(py_to_r(texts_to_sequences(tokenizer, txt))), model$input_shape[[2]]))
+    seq <- t(to_bow(unlist(texts_to_sequences(tokenizer, txt)), model$input_shape[[2]]))
   else
-    seq <- t(pad_sequences(list(texts_to_sequences(tokenizer, txt)), model$input_shape[[2]])[1,,])
+    seq <- pad_sequences(list(unlist(texts_to_sequences(tokenizer, txt))), model$input_shape[[2]])
   pred <- predict(model, seq )
   if(!raw)
     master[order(pred, decreasing = TRUE)[1:num]]
